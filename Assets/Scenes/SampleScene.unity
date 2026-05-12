@@ -508,6 +508,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::raycast
   maxDistance: 10
+  player: {fileID: 135305462}
+  interaction_object: {fileID: 1773286343}
   targetObject_wire: {fileID: 2092550223}
   text: {fileID: 1038912396}
   clueBoardManager: {fileID: 135305470}
