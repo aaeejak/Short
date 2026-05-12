@@ -60,7 +60,7 @@ public class ClueService
     // 총 단서 수
     public int GetTotalClueCount()
     {
-        return database.Count;
+        return database != null ? database.Count : 0;
     }
 
     // 발견된 단서 수

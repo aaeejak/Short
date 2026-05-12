@@ -46,10 +46,10 @@ public class ClueBoardUI : MonoBehaviour
     // ── 초기화 ────────────────────────────────────────────
 
 
-    public void Initialize(ClueService clueService)
+    public void Initialize(ClueService clueService, Sprite bgImage = null)
     {
         this.clueService = clueService;
-        BuildUI();
+        BuildUI(bgImage);
         boardRoot.SetActive(false); 
     }
 
@@ -168,6 +168,13 @@ public class ClueBoardUI : MonoBehaviour
 
         // 각 단서에 대해 리스트 아이템 생성
         var database = clueService.GetDatabase();
+        
+        if (database == null || database.allClues == null)
+        {
+            Debug.LogError("[ClueBoardUI] ❌ 단서 데이터베이스(ClueDatabase)가 연결되지 않았습니다! ClueBoardManager 인스펙터에 ClueDatabase 에셋을 할당해주세요.");
+            return;
+        }
+
         for (int i = 0; i < database.allClues.Count; i++)
         {
             ClueData clue = database.allClues[i];
@@ -178,9 +185,13 @@ public class ClueBoardUI : MonoBehaviour
             ClueListItemUI itemUI = itemGO.GetComponent<ClueListItemUI>();
             listItems.Add(itemUI);
         }
+
+        // 레이아웃 강제 재계산 (Content 높이가 0에서 시작하므로 즉시 갱신 필요)
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(listContent as RectTransform);
     }
 
-    private void BuildUI()
+    private void BuildUI(Sprite bgImage)
     {
         //  Canvas 생성 ─────────────────────────────────
         //    sortingOrder가 높을수록 다른 Canvas보다 위에 그려집니다.
@@ -211,11 +222,23 @@ public class ClueBoardUI : MonoBehaviour
         // 화면 중앙에 80% x 85% 크기의 노트패드
         GameObject notebook = CreateUIElement("NotebookPanel", overlay.transform);
         Image notebookImg = notebook.AddComponent<Image>();
-        notebookImg.color = COLOR_PAPER;
         SetAnchors(notebook, 0.10f, 0.075f, 0.90f, 0.925f);
 
-        // 노트패드 줄무늬 효과 (수평 줄)
-        CreateNotebookLines(notebook.transform, 20);
+        if (bgImage != null)
+        {
+            // 사용자가 이미지를 지정한 경우
+            notebookImg.sprite = bgImage;
+            notebookImg.color = Color.white; // 원본 이미지 색상
+            notebookImg.type = Image.Type.Sliced; // 9-Slice 이미지를 지원하기 위함
+        }
+        else
+        {
+            // 기본 노트패드 테마
+            notebookImg.color = COLOR_PAPER;
+            
+            // 노트패드 줄무늬 효과 (수평 줄) - 기본 테마에서만 추가
+            CreateNotebookLines(notebook.transform, 20);
+        }
 
         // ── 4. 헤더 (제목 + 발견 진행도) ──────────────────
         GameObject header = CreateUIElement("Header", notebook.transform);
@@ -256,7 +279,7 @@ public class ClueBoardUI : MonoBehaviour
 
         // 스크롤뷰
         GameObject scrollView = CreateScrollView(leftPanel.transform, "ClueScrollView");
-        SetAnchors(scrollView, 0f, 0f, 1f, 1f);
+        SetAnchors(scrollView, 0.1f, 0f, 1f, 1f);
         
         // Content는 ScrollView 안의 실제 콘텐츠 영역
         listContent = scrollView.transform.Find("Viewport/Content");
@@ -430,7 +453,7 @@ public class ClueBoardUI : MonoBehaviour
         //    Padding: 전체 여백
         VerticalLayoutGroup layout = content.AddComponent<VerticalLayoutGroup>();
         layout.spacing = 4;
-        layout.padding = new RectOffset(10, 10, 8, 8);
+        layout.padding = new RectOffset(15, 10, 8, 8);
         layout.childAlignment = TextAnchor.UpperLeft;
         layout.childControlWidth = true;
         layout.childControlHeight = false;

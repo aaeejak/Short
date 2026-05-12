@@ -12,6 +12,10 @@ public class ClueBoardManager : MonoBehaviour
     [Tooltip("ClueDatabase ScriptableObject를 드래그")]
     public ClueDatabase clueDatabase;
     
+    [Header("UI 커스터마이징")]
+    [Tooltip("사용자 지정 보드 배경 이미지 (없으면 기본 크림색 배경 사용)")]
+    public Sprite customBackgroundImage;
+    
     private ClueBoardUI boardUI;        
     private ClueService clueService;    
 
@@ -25,7 +29,7 @@ public class ClueBoardManager : MonoBehaviour
 
         // UI 컴포넌트 생성
         boardUI = gameObject.AddComponent<ClueBoardUI>();
-        boardUI.Initialize(clueService);
+        boardUI.Initialize(clueService, customBackgroundImage);
 
         // 시작 시 보드는 닫힌 상태
         IsBoardOpen = false;
