@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 public class MenuButtons : MonoBehaviour
 {
+    public Button firstButton;
+    void Start()
+    {
+        EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
+    }
+
     public void NewGame()
     {
         int index = SceneManager.GetActiveScene().buildIndex;
@@ -18,4 +25,6 @@ public class MenuButtons : MonoBehaviour
       Application.Quit();
 #endif
     }
+
+
 }
