@@ -40,7 +40,7 @@ public class ClueBoardUI : MonoBehaviour
     private static readonly Color COLOR_MARGIN = new Color(0.9f, 0.3f, 0.3f, 0.4f);     // 빨간 마진선
     private static readonly Color COLOR_HIGHLIGHT = new Color(1f, 0.95f, 0.3f, 0.35f);  // 형광펜 하이라이트
     private static readonly Color COLOR_TEXT = new Color(0.2f, 0.2f, 0.25f, 1f);        // 짙은 글씨
-    private static readonly Color COLOR_TEXT_DIM = new Color(0.5f, 0.5f, 0.55f, 1f);    // 흐린 글씨 (???)
+    private static readonly Color COLOR_TEXT_DIM = new Color(0.5f, 0.5f, 0.55f, 1f);    // 흐린 글씨
     private static readonly Color COLOR_DIVIDER = new Color(0.75f, 0.73f, 0.68f, 1f);   // 구분선
 
     // ── 초기화 ────────────────────────────────────────────
@@ -311,19 +311,19 @@ public class ClueBoardUI : MonoBehaviour
         imageOutline.effectDistance = new Vector2(2, 2);
 
         // 단서 이름
-        detailName = CreateText(rightPanel.transform, "DetailName", "", 22, FontStyle.Bold, TextAnchor.MiddleCenter);
+        detailName = CreateText(rightPanel.transform, "DetailName", "", 32, FontStyle.Bold, TextAnchor.MiddleCenter);
         SetAnchors(detailName.gameObject, 0.05f, 0.25f, 0.95f, 0.33f);
         detailName.color = COLOR_TEXT;
 
         // 단서 설명
-        detailDescription = CreateText(rightPanel.transform, "DetailDesc", "", 16, FontStyle.Normal, TextAnchor.UpperLeft);
+        detailDescription = CreateText(rightPanel.transform, "DetailDesc", "", 24, FontStyle.Normal, TextAnchor.UpperLeft);
         SetAnchors(detailDescription.gameObject, 0.08f, 0.08f, 0.92f, 0.24f);
         detailDescription.color = COLOR_TEXT;
 
         // 발견 장소
-        detailLocation = CreateText(rightPanel.transform, "DetailLocation", "", 14, FontStyle.Italic, TextAnchor.MiddleLeft);
+        detailLocation = CreateText(rightPanel.transform, "DetailLocation", "", 16, FontStyle.Italic, TextAnchor.MiddleLeft);
         SetAnchors(detailLocation.gameObject, 0.08f, 0.01f, 0.92f, 0.07f);
-        detailLocation.color = COLOR_TEXT_DIM;
+        detailLocation.color = Color.black;
 
         // 자물쇠 아이콘 (미발견 시)
         lockIcon = CreateUIElement("LockIcon", rightPanel.transform);
@@ -335,9 +335,9 @@ public class ClueBoardUI : MonoBehaviour
         lockText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
         // 조작 안내
-        Text helpText = CreateText(notebook.transform, "HelpText", "↑↓ 이동  |  M 닫기", 14, FontStyle.Normal, TextAnchor.MiddleCenter);
-        SetAnchors(helpText.gameObject, 0.3f, 0.005f, 0.7f, 0.028f);
-        helpText.color = COLOR_TEXT_DIM;
+        Text helpText = CreateText(notebook.transform, "HelpText", "↑↓ 이동  |  M 닫기", 20, FontStyle.Normal, TextAnchor.MiddleCenter);
+        SetAnchors(helpText.gameObject, 0.3f, 0.005f, 0.7f, 0.05f);
+        helpText.color = Color.black;
     }
 
     // ========================================================================

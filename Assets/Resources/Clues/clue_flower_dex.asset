@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b3663a782096bd4c97e5cf4a146d2f4, type: 3}
-  m_Name: NewClue3
+  m_Name: clue_flower_dex
   m_EditorClassIdentifier: Assembly-CSharp::ClueData
-  clueId: 
-  clueName: 
-  description: 
+  clueId: clue_flower_dex
+  clueName: "\uAF43 \uB3C4\uAC10"
+  description: "1. \uD53C\uC548\uD654 \u2014 \uBD89\uC740\uC0C9, \uC790\uC0DD\uC9C0,
+    \uD2B9\uC9D5\n2. \uC544\uB124\uBAA8\uB124 \u2014 \uBCF4\uB77C\uC0C9, \uAE30\uD0C0
+    \uC124\uBA85\n3. \uAE30\uD0C0 \uAF43 1\n4. \uAE30\uD0C0 \uAF43 2\n5. \uAE30\uD0C0
+    \uAF43 3"
   discoveryHint: 
   clueImage: {fileID: 0}
