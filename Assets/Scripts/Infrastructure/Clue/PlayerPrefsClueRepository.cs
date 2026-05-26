@@ -54,4 +54,12 @@ public class PlayerPrefsClueRepository : IClueRepository
 
         return result;
     }
+
+    /// 저장된 모든 단서 데이터를 삭제
+    public void ClearAll()
+    {
+        PlayerPrefs.DeleteKey(SAVE_KEY);
+        PlayerPrefs.Save();
+        Debug.Log("[ClueSystem] 저장된 단서 데이터 전체 삭제 완료.");
+    }
 }
