@@ -315,8 +315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClueBoardManager
   clueDatabase: {fileID: 11400000, guid: 9910f7b0b63a2234ca09e8cf07afc7e1, type: 2}
   customBackgroundImage: {fileID: 21300000, guid: 057a8893b82309b4fa07df4f86c5202e, type: 3}
-  resetOnPlay: 1
---- !u!1 &177011407
+--- !u!1 &246187132 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5751146113478264186, guid: ca85338f4509fad419c8f79cb1d29a6e, type: 3}
   m_PrefabInstance: {fileID: 996756737}

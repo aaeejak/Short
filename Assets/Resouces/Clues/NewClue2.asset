@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b3663a782096bd4c97e5cf4a146d2f4, type: 3}
-  m_Name: clue_kingdom_letter
+  m_Name: NewClue2
   m_EditorClassIdentifier: Assembly-CSharp::ClueData
-  clueId: clue_kingdom_letter
-  clueName: "\uC655\uAD6D\uC5D0\uC11C \uC628 \uC11C\uC2E0 \uD639\uC740 \uD3EC\uC2A4\uD130"
+  clueId: 
+  clueName: 
   description: 
   discoveryHint: 
   clueImage: {fileID: 0}
