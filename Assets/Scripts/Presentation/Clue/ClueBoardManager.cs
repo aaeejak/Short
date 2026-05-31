@@ -15,40 +15,14 @@ public class ClueBoardManager : MonoBehaviour
     [Header("UI 커스터마이징")]
     [Tooltip("사용자 지정 보드 배경 이미지 (없으면 기본 크림색 배경 사용)")]
     public Sprite customBackgroundImage;
-
-    [Header("디버그")]
-    [Tooltip("체크하면 플레이 시작 시 모든 단서 발견 기록을 초기화합니다")]
-    public bool resetOnPlay = false;
     
     private ClueBoardUI boardUI;        
     private ClueService clueService;    
 
     void Awake()
     {
-        // clueDatabase가 Inspector에서 할당되지 않은 경우, Resources에서 자동 로드
-        if (clueDatabase == null)
-        {
-            clueDatabase = Resources.Load<ClueDatabase>("Clues/ClueDatabase");
-            if (clueDatabase != null)
-            {
-                Debug.Log("[ClueSystem] ClueDatabase를 Resources에서 자동 로드했습니다.");
-            }
-            else
-            {
-                Debug.LogError("[ClueSystem] ❌ ClueDatabase를 찾을 수 없습니다! Inspector에서 할당하거나 Resources/Clues/ 폴더에 넣어주세요.");
-                return;
-            }
-        }
-
         // 저장소 생성 
         IClueRepository repository = new PlayerPrefsClueRepository();
-
-        // 디버그: 플레이 시작 시 단서 초기화
-        if (resetOnPlay)
-        {
-            repository.ClearAll();
-            Debug.Log("[ClueSystem] ⚠️ 단서 데이터 초기화됨 (resetOnPlay 활성화)");
-        }
 
         // 서비스 생성 
         clueService = new ClueService(clueDatabase, repository);
@@ -126,9 +100,6 @@ public class ClueBoardManager : MonoBehaviour
         if (isNew)
         {
             Debug.Log($"[ClueSystem] 새 단서를 발견했습니다!");
-
-            // 새 단서 발견 시 자동으로 단서 보드 열기
-            OpenBoard();
         }
     }
 }
