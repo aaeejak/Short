@@ -40,7 +40,7 @@ public class ClueBoardUI : MonoBehaviour
     private static readonly Color COLOR_MARGIN = new Color(0.9f, 0.3f, 0.3f, 0.4f);     // 빨간 마진선
     private static readonly Color COLOR_HIGHLIGHT = new Color(1f, 0.95f, 0.3f, 0.35f);  // 형광펜 하이라이트
     private static readonly Color COLOR_TEXT = new Color(0.2f, 0.2f, 0.25f, 1f);        // 짙은 글씨
-    private static readonly Color COLOR_TEXT_DIM = new Color(0.5f, 0.5f, 0.55f, 1f);    // 흐린 글씨 (???)
+    private static readonly Color COLOR_TEXT_DIM = new Color(0.5f, 0.5f, 0.55f, 1f);    // 흐린 글씨
     private static readonly Color COLOR_DIVIDER = new Color(0.75f, 0.73f, 0.68f, 1f);   // 구분선
 
     // ── 초기화 ────────────────────────────────────────────
@@ -55,13 +55,14 @@ public class ClueBoardUI : MonoBehaviour
 
     public void OpenBoard()
     {
+        // Canvas가 활성 상태여야 레이아웃 계산이 정상 동작함
+        boardRoot.SetActive(true);
+
         PopulateList();
         
         // 첫 번째 항목 선택
         selectedIndex = 0;
         UpdateSelection();
-
-        boardRoot.SetActive(true);
     }
 
     public void CloseBoard()
@@ -189,6 +190,8 @@ public class ClueBoardUI : MonoBehaviour
         // 레이아웃 강제 재계산 (Content 높이가 0에서 시작하므로 즉시 갱신 필요)
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(listContent as RectTransform);
+
+        Debug.Log($"[ClueBoardUI] 리스트 아이템 {listItems.Count}개 생성, Content 높이: {(listContent as RectTransform).rect.height}");
     }
 
     private void BuildUI(Sprite bgImage)
@@ -308,19 +311,19 @@ public class ClueBoardUI : MonoBehaviour
         imageOutline.effectDistance = new Vector2(2, 2);
 
         // 단서 이름
-        detailName = CreateText(rightPanel.transform, "DetailName", "", 22, FontStyle.Bold, TextAnchor.MiddleCenter);
+        detailName = CreateText(rightPanel.transform, "DetailName", "", 32, FontStyle.Bold, TextAnchor.MiddleCenter);
         SetAnchors(detailName.gameObject, 0.05f, 0.25f, 0.95f, 0.33f);
         detailName.color = COLOR_TEXT;
 
         // 단서 설명
-        detailDescription = CreateText(rightPanel.transform, "DetailDesc", "", 16, FontStyle.Normal, TextAnchor.UpperLeft);
+        detailDescription = CreateText(rightPanel.transform, "DetailDesc", "", 24, FontStyle.Normal, TextAnchor.UpperLeft);
         SetAnchors(detailDescription.gameObject, 0.08f, 0.08f, 0.92f, 0.24f);
         detailDescription.color = COLOR_TEXT;
 
         // 발견 장소
-        detailLocation = CreateText(rightPanel.transform, "DetailLocation", "", 14, FontStyle.Italic, TextAnchor.MiddleLeft);
+        detailLocation = CreateText(rightPanel.transform, "DetailLocation", "", 16, FontStyle.Italic, TextAnchor.MiddleLeft);
         SetAnchors(detailLocation.gameObject, 0.08f, 0.01f, 0.92f, 0.07f);
-        detailLocation.color = COLOR_TEXT_DIM;
+        detailLocation.color = Color.black;
 
         // 자물쇠 아이콘 (미발견 시)
         lockIcon = CreateUIElement("LockIcon", rightPanel.transform);
@@ -332,9 +335,9 @@ public class ClueBoardUI : MonoBehaviour
         lockText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
         // 조작 안내
-        Text helpText = CreateText(notebook.transform, "HelpText", "↑↓ 이동  |  M 닫기", 14, FontStyle.Normal, TextAnchor.MiddleCenter);
-        SetAnchors(helpText.gameObject, 0.3f, 0.005f, 0.7f, 0.028f);
-        helpText.color = COLOR_TEXT_DIM;
+        Text helpText = CreateText(notebook.transform, "HelpText", "↑↓ 이동  |  M 닫기", 20, FontStyle.Normal, TextAnchor.MiddleCenter);
+        SetAnchors(helpText.gameObject, 0.3f, 0.005f, 0.7f, 0.05f);
+        helpText.color = Color.black;
     }
 
     // ========================================================================
@@ -431,13 +434,10 @@ public class ClueBoardUI : MonoBehaviour
         scrollRect.horizontal = false;  // 수평 스크롤 비활성화
         scrollRect.vertical = true;     // 수직 스크롤만
 
-        // Viewport (보이는 영역)
+        // Viewport (보이는 영역) — RectMask2D는 Image 없이도 마스킹 가능
         GameObject viewport = CreateUIElement("Viewport", scrollView.transform);
         StretchToFill(viewport);
-        Image viewportImg = viewport.AddComponent<Image>();
-        viewportImg.color = new Color(0, 0, 0, 0); // 투명
-        Mask mask = viewport.AddComponent<Mask>();
-        mask.showMaskGraphic = false;
+        viewport.AddComponent<RectMask2D>();
 
         // Content (실제 콘텐츠가 들어가는 곳)
         GameObject content = CreateUIElement("Content", viewport.transform);
@@ -456,7 +456,7 @@ public class ClueBoardUI : MonoBehaviour
         layout.padding = new RectOffset(15, 10, 8, 8);
         layout.childAlignment = TextAnchor.UpperLeft;
         layout.childControlWidth = true;
-        layout.childControlHeight = false;
+        layout.childControlHeight = true;
         layout.childForceExpandWidth = true;
         layout.childForceExpandHeight = false;
 
@@ -479,10 +479,13 @@ public class ClueBoardUI : MonoBehaviour
     {
         GameObject itemGO = CreateUIElement($"ClueItem_{index}", parent);
 
-        // 높이 설정
+        // 명시적 높이 설정
+        RectTransform itemRect = itemGO.GetComponent<RectTransform>();
+        itemRect.sizeDelta = new Vector2(0, 42);
+
         LayoutElement layoutElement = itemGO.AddComponent<LayoutElement>();
-        layoutElement.preferredHeight = 36;
-        layoutElement.minHeight = 36;
+        layoutElement.preferredHeight = 42;
+        layoutElement.minHeight = 42;
 
         // 배경 (선택 시 하이라이트용)
         Image bg = itemGO.AddComponent<Image>();
@@ -493,9 +496,9 @@ public class ClueBoardUI : MonoBehaviour
             ? $"  {index + 1}. {clue.clueName}"
             : $"  {index + 1}. ???";
 
-        Text itemText = CreateText(itemGO.transform, "Text", displayText, 17, FontStyle.Normal, TextAnchor.MiddleLeft);
+        Text itemText = CreateText(itemGO.transform, "Text", displayText, 22, FontStyle.Normal, TextAnchor.MiddleLeft);
         StretchToFill(itemText.gameObject);
-        itemText.color = isDiscovered ? COLOR_TEXT : COLOR_TEXT_DIM;
+        itemText.color = Color.black;
 
         // ClueListItemUI 컴포넌트 추가
         ClueListItemUI itemUI = itemGO.AddComponent<ClueListItemUI>();

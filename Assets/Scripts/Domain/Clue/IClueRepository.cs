@@ -9,4 +9,7 @@ public interface IClueRepository
 
     /// 저장된 발견 단서 ID 목록을 불러옴
     HashSet<string> LoadDiscoveredClues();
+
+    /// 저장된 모든 단서 데이터를 삭제
+    void ClearAll();
 }
